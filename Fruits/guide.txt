@@ -1,0 +1,1587 @@
+#start django...
+
+#install django
+pip3 install django
+
+django-admin  # show the main command. it is a CLI = command line interface
+
+django-admin startproject <pro-name> # start a pro at current dir ----startproject is a subcommand for django-admin
+
+<manage.py> is a heart of django pro
+
+
+'wsgi.py' and 'asgi.py' file uses to deploy files 
+
+the 'settings.py'  is global setting about pro
+
+
+python manage.py   #run manage.py 
+./manage.py  #show subcommands 
+
+#install django at virtual env
+
+localhost=127.0.0.1
+
+./manage.py startapp <app_name>#make an app named app_name by subcommand startapp at django file at current dir
+
+add <started_app_name> to INSTALLED_APP at settings of main file.
+
+form django.urls import path
+from django.http import HttpResponse
+from django.urls import include # to include an url in an app to urls in the main urls.py 
+
+placeholder: #make variable at jango by <>  .e.g  '<variables>' in the string yet use in path. and return it to function.
+
+from django.http import HttpResponseNotFound
+
+#command at placeholder
+path("<int:variable>",...) or path("<str:variable>",...) #order by the way that <str:vari>
+if it is possible to change <variable> type to int or str or anyother order it changes to.
+
+
+302....#status code 300,302,... are especially used as redirections events.
+
+from http import HttpResponseRedirect
+HttpResponseRedirect("newurl")#it resend the page to "newurl"
+
+#use reverse
+from django.urls import reverse  #it get a name and reverse or make a url by that.
+but you should use the name at urls.py at urlpatterns at path    .e.g
+path('path_url<var1><var2>..',views...., name="path_name") #it take a name to path and has been used in place of 'path_url'
+#how to use reverse???
+from django.urls import reverse 
+path_vari = reverse('name of the path .e.g path_name',args=[var1,var2])
+#path name was an entered name at urls.py at path and their variables(args) at path must be in the list 
+and then we have a full url of made application at path_vari
+#then we can use it by:'{path_vari}' at string.
+
+
+
+
+
+
+
+
+
+#to use html tags at views....
+our_reply = f'<html-tag> messages...</html-tag>'  #it run html tag at browser.
+and send our_reply by HttpResponse(our_reply)
+
+
+#work with templates   *********
+make a file named 'templates' and make another at that named our application name so ...
+our-app/templates/our-app/
+then make html-file at that path.
+
+
+
+#use templates
+first make a dir at app_name_folder
+app_name_folder/templates/app_name_folder
+then we make html template at that folder: app_name_folder/templates/app_name_folder
+after that go to views and --> 
+from django.template.loader import render_to_string  #it changes html templates or file at app_name_folder to string at the path gien.
+our_html_string = render_to_string( 'app_name_folder/html1.html') #render html1.html to string 
+then
+return HttpResponse(our_html_string)  #clearly done after good pathing at urls.py.
+or.....
+from django.shourtcuts  import render   
+return render(request,'app_name_folder/html1.html')  #it directly make it string at return it 
+
+  
+
+we can use complete address at settings.py at TEMPLATES at 'dir':"our_path" and we don't sign our app 
+to INSTALLED_APP   
+
+
+if you made a variable at urls.py you must sign it at the views.py
+
+DTL = django templates language      #merge django syntax and html syntax
+#use dtl to update files
+at views.py you need render
+we can send informations by the dictionary at views by render.
+dict={'key1':'data1',...} s
+we can send it by render
+render(request,'html-file-path.html',context)
+render(request,'html-file-path.html',dict) it send informations at dictionary type just in dictionary and the keys is usable at htmlfile
+then go to htmlfile and read the data at dict by {{key1}} and it sends the 'data1' at html file
+<span>{{key1}} </span>   
+#***notice: we use the key to send the values.
+
+
+
+#django template filter     search and found different built in filter
+built in filter has been used by ' | ' after html dtl
+.e.g     
+<span>   it is the time{{ time | add 3}}   </span>
+just showing variable has been changed not a main vari.
+
+you can form your built in filter function.
+
+
+#template tags
+uses in template html files
+{% python command .. %}   #is used to command python in htmlfiles
+..html commands.....
+{% end python command %}
+
+
+
+#search about different template tags  .e.g   url template tag
+{% url "url's name"    variable_value1 va...2  v..3 ...%}  #we can use url command to make link between urls 
+or 
+{% url "url's name"    variable1=value1 va.2=...2  v..3=..3 ...%}  send values to variables needed.  
+***it makes complete url not a complete link and you haven't to close this tag.
+
+#{% if condition1 %}
+    do 1
+ {%elif condition2%}
+    do 2
+ {%else %}
+    do3
+ {%endif%}
+'if' tag to set conditional matter.
+
+
+#use inheritance at html files to make code shorter.
+make a folder named'templates' at main djagnofile
+then make a file named 'base.html' or other name...
+write base html code.
+then use {% block block_name %} default data{% endblock block_name %} at 'base.html'file
+#how to use it in other html file
+{% extends '../../../or_path_of_base.html' %} or {% extends 'name_of_base.html' %} 
+#it should come before all the html code....
+***but if you want to use the direct name of 'name_of_base.html' you should add the 
+newtemplats folder PATH in the settings at templates part
+*it reuse the base.html file.
+
+
+
+#how do i use the  include tag 
+make a folder named includes at one of templates folder
+then make a html file you want to reuse at another htmlfiles
+go where you want to use the 'includes'file contains and write an include tag in this way:
+{% include 'written_file_at_includesfile_PATH.html' %} # it run the lines you write at that file.
+we can use special part of htmlfile at include tag but yet i don't learn it ..
+***if we don't use render to send dictionary of informations we can't use dtl type of variables 
+at the include tag.
+#use given data at main page and sign it at html includes file
+sign the vari at include tag .e.g but use it at includes_file.htmls
+###use it ...
+{% include 'includes/file.html' with vari_sign_here_use_in_main_html="7days at cheers.html" %}
+use the variable by {{vari_at_mainhtml_sign_at_includes_file}}
+
+
+#make 404  not found page
+make 404.html file in the templates folder using extends and block tags of base.html
+in views.py use 
+from django.template.loader import render_to_string   #to change html file to pure string
+from django.http import HttpResponseNotFound    #to send a html page
+vari1 = render_to_string('path/404.html')   #change 404.htlm to string
+return HttpResponseNotFound(vari1)           #return vari1 to page 
+#or you can go another way
+from django.http import Http404
+raise Http404()                  #automatically send 404.html file at templates or  automatic not found error page
+notice*******:use ''''raise''''' not return _and you can make 404.html or not to used by http404()
+
+
+###########**django is MVT STRUCTURED means model.view.template
+
+
+
+#static files 
+first make 2 folders into eachother at your 'app_path'
+make  'app_path/static/app_path_name/appname.css'      #.e.g: we have a example static file like appname.css at the path of static files 
+then control 3 parameters at main settings.py 
+one: at INSTALLED_APPs part the 'django.contrib.statics' has been should to be     #make sure statics part of django run
+two; at  STATIC_URL= 'static/'  has been should to be as a static file path.       #make sure path of static file signed at the settings.py
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]   #why?
+
+* good move 
+so now to use static files like css files we should write a special tag above the file 
+we want to use the statuc files in it  the tag is :::
+{% load static %}                                               #to remind we want to use static files.
+then to use the css file we need to make a html tag that is ::
+<link rel="stylesheet"  href = "{% static 'appname_path/appname.css'%}"   #notice: use a static tag to sign it and for all static file at html we need <link> tag.
+then we write changes at appname.css file and it must run.
+.........it's done rightly..............
+
+
+
+#use static files at main part of django
+make 'static' folder at main part of app beside manage.py and db.sqlite3
+make css file .e.g  style.css
+and do changes in it .e.g  add new font of google
+you need to add new thing in your main 'settings.py':::
+STATICFILES_DIRS = [
+BASE_DIR / "main_static_path_name" ,
+]                                                #it cause to find the main static files at "main_static_path_name" files
+then make a <link rel=? href=?> tag at the file you want to do changes of static files in it 
+####
+
+
+
+#slug type:   #inclusion to int and str.
+#path('sldkf<slug:slug',views/ldkf)
+
+ 
+notice:*****extends tag must be the first tag at html pages....
+
+
+"چرا میتونم از پوشه ی استاتیک داخل  اپ خودم عکس بیارم اما از استاتیک اصلی نمیشه؟؟؟؟؟؟؟؟؟"
+چرا نمیتوانم از استاتیک اصلی استفاده کنم؟
+
+
+
+
+
+
+
+#static images at pro
+put images at  appfolder/static/appfolder_name/images/
+and then read them by static tag.   ####imgs that uploaded is defferent.
+
+
+
+
+notice***:we can send arguments without signing by name in order .e.g:
+{%url 'nameofpath'  arg1='sldkfj' arg2='sldkf'%} or  {%url 'nameofpath' 'valu1' 'value2' %}
+
+
+
+
+#send data as a dict by render
+when we send the data to a html file we can use dependencies of that part of file to the 
+dict sended. 
+notice:#####to read informtions from file dont use '' dict={'d':'s'} you should write{{dict.d}},
+
+
+
+when we use STATIC TANG  #######3
+{{static 'path'|add:item.entry}} #it adds 'item.entry'obj at the end of 'path' str to make it dynamic.
+
+
+
+
+
+******python good function****
+            next()
+current_vari= next( vari for vari in list_or...  if vari==condition or...)  #found first item make conditions satisfied.
+******
+
+
+linebreaks********** 
+{{item.content|linebreaks}}  #line breaks enable our enterline in paragraph at html1.html
+
+
+
+
+#databases*****************
+data
+1,temperary data
+2,semipersistant data
+3,persistant data     
+3 saved in databases 
+
+
+
+types of databases:
+1,sql    2,nosql
+
+
+connect database by django in models.py:
+from django.models import models
+class  class_name(models.Model):  
+#inorder to inherit at models.Model 
+#you should write models.model in the argumant to connect 
+                 ###and class_name is name of the table at database
+   
+
+*google django models fields
+
+at any class at models.py you should use the database by modules of models 
+.e.g:
+title = models.CharField(max_length= 300)
+price = models.IntegerField()
+#we called above class "model"
+**inorder to use database you should mention "app_name" in "installed apps" in settings.py
+
+
+***   ORM  ****
+connections of programming and database features.
+
+?
+?
+create,read,update,delete ==== its famous to CRUD
+
+
+./manage.py  shell    ###use python shell in django
+***commanding at django shell***
+from <appname>.models  import <model_class_name_in_models.py>
+
+#create items via shell in database
+item_name = imported_models_class(arg1=valu1 ,arg2=val2,...)
+item_name.save()      #it saves it to database.
+
+model_class_name.objects.all() #see evidance of adding item at database via shell
+
+#show entries items by shell 
+model_class_name.objects.all()[item_number].item_name
+e.g.:
+products.objects.all()[1].price   #return "price" item in the"products"class in the 2th item.entry
+
+#add __str__ module to model.class
+def __str__(self):
+   return f'{self.item1}_{self.item2}-....'
+
+###google django models validator.
+
+#**   validator in django  **#
+#first import them
+from django.core.validators  import MinValueValidator,Max.Value.Validator
+*then use them
+#add null,default 
+# null ===we can put nothing in it ,   default = val1  ====put val1 in all doesn't have value
+class model_class_in_models.py(models.Model):
+   item_1_in_db = models.CharField(max_length = 300,null=True)
+   item_2_in_db = models.BooleanField(default = False)
+
+   item_3_in_db = models.IntegerField(
+      validators =[
+      MinValueValidator = 3,
+      MaxValueValidator = 234, 
+      ]
+   )
+   ####Its the way we use validators.
+
+   
+#make new changes in items of database
+from app_name.models import model_class_name.objects.all    #import db class from models.py
+vari1 = model_class_name.objects.all()[2]       #select the entire table of db
+vari1.item = new_value     #make changes to item
+vari1.save()               #to save changes in db
+
+#delete entry in db
+from app_name.models import model_class_name.objects.all    #import db class from models.py
+vari2 = model_class_name.objects.all()[2]       #make instance or select the entire table of db
+vari2.delete   #delete an entry
+
+
+
+#add entry to db _another way without instance
+#    create    *
+model_class_name.objects.create(item1=val1,arg2=val2,...)
+
+#read data without objects.all()[1]...
+#read by 'get()'
+models_class_name.get(item=value) 
+#*it returns just '''one''' entry with the same value at item
+#notice: if data not found or exist more than 1 with same value of item it makes error...
+
+
+
+#filter given data
+model_class_name.objects.filter( feature1=value1 , feature2= value2 ) 
+#return all of the entries contained values of features.
+###notice: I can't use '<  <=  >=  >' in the filter but has been made another way to do that.
+
+
+#***use field lookups ***#
+models.class_name.objects.filter(
+   feature1__lt=3,        ###__lt=lower than = feature1<3
+   feature2__lte=5,        ###__lt=lower than equal = feature2<=5
+   feature3__gt=7,        ###__lt=greater than = feature3>7
+   feature4__gte=9,        ###__lt=lowerthan equal= feature4>=9
+   feature5__contains='text5'    ##text5 exists in that.key sensitive
+   feature6__icontains='text6'    ##text6 exists in that.not key sensitive
+   )
+it uses 'and' between features.inorder to use 'or' we do another way.
+
+###google django filter  +  feild lookups
+
+
+###how to use 'or' among features of filter??
+from django.db.models import Q    #import Q as query.
+then: #use Q and '|'
+models.class_name.objects.filter(
+   Q(feature1__lt=3) |  Q(feature2__lte=5) | Q(feature3__gt=7) | Q(feature4__gte=9) |  Q(feature5__contains='text5') | Q(feature6__icontains='text6') ) 
+#Q uses 'or' between differenet features not 'and'
+# we can use 'or=|'and 'and=,' together in the filter also.
+#notice: last feature can come without 'Q' but it has to use and=','
+
+
+
+
+#make base.html at main templates but other html file in templates/app_name/other.html
+notice: control ('DIRS:[BASE_DIR /'templates']) has been gotten in template part at main settings.py.
+
+write below in urls.py
+from django.urls import path
+from . import views
+
+in main urls.py write and import lines below: #to add all path to main app.
+from django.urls import include,path
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('anypath/',include('app_name.urls')),
+]
+
+
+
+####***    use database in views.py   ***####
+in views.py we should write:
+from .models import models_class_name
+
+#get data from db or raise 404
+from django.shortcuts import get_object_or_404  #import to use
+prods=get_object_or_404(model_class_name,feature=value)    #get data or send 404
+
+
+
+
+#use reverse to send url 
+from django.urls import reverse
+reverse('url_name' args=[vari1,vari2,...])
+
+
+#use get_absolute_url in models
+in models.py in one of classes of database add a function:
+from django.urls import reverse
+def get_absolute_url(self):
+   return reverse('url_name' args=[self.feature])       #.e.g:self.id
+*then go to html file and use {{tiem.get_absolute_url}}
+
+
+
+#whats slug in django:
+slug is key word to sign a data.
+
+
+
+#db_index = True
+when we use a specific item in database we sign in by " db_index=True" to make database works better.
+
+
+
+
+###   aggregate.   ***
+#how to use average,Min,Max,.. in database.   and put them in the dictionary.
+from django.db.models import Min,Avg,....
+then use it by variables includes data of databases
+items = class_model_name.objects.all()
+features_aggregated = items.aggregate(Avg('item1_in_database'),Min("item2_in_database"),...)
+#now 'features_aggregated' is a dictionary with the data we wanted.
+
+
+#order command :order given data form database before extract them from database.
+items = class_model_name.objects.all().order_by('item1_in_db',item2_in_db',...)
+#it sends ordered data to python.
+#notice: its much more better to order datas at database rather than python or any interpreter.
+
+
+
+
+
+***    django admin   ****
+#super user to access datas
+python manage.py createsuperuser     
+
+
+#make database items visible at django admin page
+#how to config it ???
+#in admin.py in application do below changes
+from django.contrib import admin
+from . import models
+admin.site.regsiter(models.class_model_database_name)    #they inform the main administration of django "that class_model_database_name" exists in database...
+ 
+
+#blank = True,False
+means we can get the value or not to an entry in database. when we don't get value we won't see error
+
+#editable = True,False
+means it hasn't permitted to edit the entry saved in database before.
+
+
+#### *** make db items in admin page editable or not
+from django.contrib import admin   #in admin.py
+#make a class inherites from admin.ModelAdmin
+class class_name_admin(admin.ModelAdmin):
+   readonly_fields = ['item1_in_db','item2_in_db',....] #it make all these items just 'readable' in admin page database part.
+#then make addintional inheritance of your regsiter class to above class=class_name_admin
+admin.site.register(models.class_name_in_database,class_name_admin)
+
+
+
+#prepopulated_fields     ****  when item has been adding in admin page it adds the item2_in_db we want too.
+class class_name_admin(admin.ModelAdmin):
+   readonly_fields = ['item1_in_db','item2_in_db',....] #it make all these items just 'readable' in admin page database part.
+   prepopulated_fields = {
+      'item1_in_db':['item2_in_db'],
+   }
+
+*****
+google django admin
+*****
+
+
+*** how to filter item in django admin page.
+#list_display,list_filter,list_editable
+class class_name_admin(admin.ModelAdmin):
+   list_display = ('item1_in_db','item2_indb',..) #display items in first main list of django admin page
+   list_filter = ['item1_in_db',...]    #accessibility to felter by 'items'in db,
+   list_editable=('item1_in_db','item2_in_db',,,)  #access to edit 'items' in tuple in main django admin list of database
+
+   
+
+**#relations between tables of databases.
+1-  1 to 1
+2-  1 to several
+3-  several to several
+
+#one to many relation between tables.
+*MAKE  a relational table (add an item to main models.py)
+first make a table that you want to ralate to another table in models.py through:
+class models_table1_name(models.Model):
+   item1=....,
+   item2=....,
+then to relate it to another do :
+class models_table2_name(models.Model):
+   .........
+   item_to_relate_to_another_table = models.Forein_Key(to=models_table1_name , on_delete=models.PROTECT)   
+   at the section('to=?') we should mention the table we want to relate to item.content
+   at the section('on_delete=?') .....recognize how it has been done after delete the table relate to that.for instance:
+   models.CASCADE    means that after delete that delete this
+   models.PROTECT    means that after delete that keep this
+   models.SET_NULL   means that after delete that keep both but don't show templates/app_name/other.html
+   we have more option.......
+   ****what is SOFT_DELETE: DEACTIVE NOT DELETE.
+
+
+
+*use one to many rel in views.py
+import the new_rel from models
+then we have access to the new_rel_item in every relational items.aggregate
+
+
+###query to related table  in shell
+from  app_name.models import db_class,db_related_class
+obj1 = db_class.objects.filter(related_item__items-of-related-item+__items-that-we-have-access = "find that")
+.e.g:
+obj2 = products.objects.filter(category__title__contain="nokia")
+
+
+
+#access to main item of db through releted_item
+from  app_name.models import db_class,db_related_class
+#then in the shell
+rel_entry = class_name_models_to_relate.objects.get(name='corp')
+#now use one of methods of django
+rel_entry.main-class-models-name__set.all()      #it returns all objects related to rel_entry  #"__set" come at the end of "main_class_name" it's a django options.
+***
+#if you don't want to use "__set" in the end of your "main-class-name" you can mention the name at the models-class-name when you make a relational table through
+#then in the models.py in main class of db
+item_to_relate_to_another_table = models.Forein_Key(........,related_name = "special-name")   #its the new name use to get objects by the relational items.
+.e.g:
+>>> al= product_category.objects.get(id = 2)
+>>> al.products.all()   #or use filter  or ....
+
+blank=True or False   means the item could be empty.
+
+### one to one  relation between tables 
+
+
+
+
+
+####    Meta class in models.py    #####
+#how do we change some features in python admin self.item1
+#use Meta class in models.py in the tables class at models.py
+class ....(self);
+   ...
+   ...
+   class Meta:
+      verbose_name = "name1"   # change showed name in the table name of admin in site item1
+      verbose_name_plural = "name2"   #change showed plural name in the table name of admin in site item
+
+
+#change "your_app_module"name in admin site
+first: go to /your_app/apps.py
+then add verbose_name in class ProductsConfig(AppConfig):
+class ProductsConfig(AppConfig):
+   ...
+   verbose_name = "any_name"
+
+
+
+#many to many relation between tables in db
+#in models.py
+class many_to_many_item(models.Model):
+   item1 = models.IntegerField(max_length=32)
+#then in class we want to add many to many item in 
+class main_class(models.Model):
+   ...
+   item = models.ManyToManyField(m_to_m_last_defined_class)   #it adds m_to_m item in class_model_name.objects.all
+
+
+   
+
+
+#many to many relation in django shell
+#change and add tag by"add" and create
+tag_var1 = tag_db_model.create(item1=..)
+tag_var1.save()
+main_item2 = main_db_models.tag_item_in_main_db_class.add(tag_var1)
+main_item2.save()
+
+#reverselation ****how to find main item through dependent tag in relational tables
+var3 =   m_to_m_item.main_table_name_set.all()   #("_set" comes after main_table_name to show related variables.)
+
+
+#soft delete   #never delete data but when subscribe deletes the data never sees it agein.
+
+
+
+####use made templates for projects.
+first check the settings.py about static files.
+.e.g:
+STATIC_URL = 'static/'
+#new line changed below
+STATICFILES_DIRS=[
+    BASE_DIR / 'static'
+]
+#make 'static' folder in place of 'manage.py'
+
+
+
+
+# learn about django render partial  at its documents
+
+
+component = part of the page that controls by itself.
+#search about django render partial package.****
+
+
+#use dynamic page to make them component page.(access to dynamic data from database and use them in the relational page.)
+#first need "django render partial package" so download it
+pip install django-render-partial
+#and then add django_render_partial to "installed_apps" in settings.py
+#then you have 2ways to use it .. 
+one:
+make the views function related to speciall template ....
+then:  #in the template contained the other html:
+{%load  render_partial%}
+#then in that block you want,make render_partial tag to above 'views.py' function
+{%block anyone %}
+{%render_partial   "app_name.views.views_partial_name_function" %}
+{% endbock %}
+____________________________
+
+
+
+
+
+two:
+make the views function related to speciall template ....
+def partial_part(request):
+   return(request,"htmlpage_in_templates_.html",{,,,})
+
+then make a urls.py path that needs to name***
+"""path("special_partial",views.partial_part,name="partial_url_name"),"""
+
+then:  #in the template contained the other html:
+{%load  render_partial%}
+#then in that block you want,make render_partial tag to above 'views.py' function
+{%block anyone %}
+{%render_partial   "partial_url_name" %}
+{% endbock %}
+
+
+#noitce: it's better not to use url caused to guess url by people.
+___________________________
+
+
+
+######     how to work with forms    ::::::*****
+
+
+form in html ****
+<form  ....  method="post" or "get"    action= "{% url 'url_name_urls.py'%}"> #action:where infos send.if 'actin' not signed,infos send to current page address  #"post"method send infos in header not url but "get"mothod sends infos in by url.
+   <input type=''  name=''  class='' required=''  placeholder='' >  #type can be text or email or... #required means its essential to put or not #placeholder is the name is shown in the empty box.
+#####******8#name is so important caused to be 'variable_name' of input in the server side.
+</form>
+
+
+#use  CSRF token to send infos.
+add a line below in 'form'tag of html:
+{% csrf_token %}     # send CSRF token to make safe send infos.
+
+
+#recognize "get" or "post" method in forms.
+#in views.py in one of function base views use:
+request.method   #return a string what method is.('post'or'get')
+#if request.method is 'post' then:
+request.POST returns a dict has infos.
+
+
+
+
+####    redirect  
+form http.shortcuts import redirect      #when use it status code is in range 300
+return redirect(reverse("url_name"))    return back to the"url_name"
+
+
+
+
+from django.urls import reverse
+from django.shortcuts import redirect
+
+data validation...
+
+#use forms.
+#make forms.py in app and in that
+from django import forms
+#then make a class inherited(forms.Form)
+class class_name_forms(forms.Form):
+#make the item you wanna make it form
+item_1_text = forms.CharField()
+item_2_email = forms.EmailField()    #and any other fields ... google it....
+#then go to urls.py and make it return to related .html file by render to it 
+#import forms.py in views.py 
+from .forms import class_name_form
+#then use it in function based views
+def function_view_form(request):
+#realize what method is used to send infos(post or get)by request.method
+if request.method == "POST":
+   new_class_variable = class_name_form(request.POST)  # to get all information and make an object in variable
+   if new_class_variable.is_valid():    #that object id valid or not. for instace email is right email or not
+      print(new_class_variable.cleaned_data)    #print all data in an object ###cleaned_data need to come after ".is_valid"
+      return render(request,"page.html",{"send_to_html":new_class_variable}) 
+#then go to .html file and use it by {{send_to_html}} #it makes all forms.....
+
+
+
+#items in form's fields. 
+label="any"    #name is shown to sign the form item.
+widget=forms.EmailInput   # what type of data in form is used
+error_messages = { 'required':"enter ...",....}  #what to show when error 
+max_length=20
+required = True or False    # it require to or not.
+
+
+
+#use attributes in widget 
+widget=forms.TextInput(
+            attrs={
+                'class':'form-control col-md-12',        #make html class in python file,
+                'placeholder':"text",
+            }
+        )
+
+
+
+#use separated forms in .html files.
+        <div class='col-md-6 form-group'>
+         {{contact_form.email.label_tag}}   'various part of form's item.'
+         {{contact_form.email}}
+         {{contact_form.email.errors}}
+         </div>
+
+#use "for" when get them in html
+*not sure: after signing form in html code class in form tag do :::
+*if you have more than one item in your form group you could handle it by 'for' loop 
+{%for item in group_form%}
+         {{item.label_tag}}
+         {{item}}
+         {{item.errors}}
+{%endfor%}
+#make and run all the html code automatically for various datas in form group.
+
+
+#send data by form to database by views.py
+from .from import form_group
+from .models import models_func 
+make an object of form_group by new variable in "post" method of form
+new_form_obj = form_group(request.POST)   #new object in addition more inform
+#now you should run is_valid method. #***its essential
+if(new_form_obj.is_valid())  #if its been true::: continue
+         #make new objec of models_func
+         new_model_obj = models_func(
+            item1_in_models_func = new_form_obj("similar_item"),
+            item2_in_models_func = new_form_obj("similar_item2"),
+            ...
+         )
+
+
+
+
+#***  directly connect forms to models or database  ***#
+#model forms
+first: import your class want directly connect
+second: make class inherited from (forms.ModelForm) in forms.py 
+third: make a class "Meta" in above class 
+then in meta sign "model = 'class_model_imported'"
+and:   
+         filds = ['item1inclss','item3inclass',...]
+.e.g
+from .models import contact_us
+#how to change some features of html code in 'direct models to form'
+class contact_model_form(forms.ModelForm):
+    class Meta:
+         model = contact_us
+         fields = ['email','title','full_name','message']   #just show members of field
+         #fields = '__all__'     #show all
+         #exclude = ['is_read_by_admin']   #show all despite exclude member
+         #*** change some appearance in direct form on models by 'widget'dic in Meta
+         #widget filter what infos should be taken from client
+         widget={
+            "item_in_model_class": forms.TextInput(attrs={
+               'class':'form-control',
+            }),
+            "item2_in_model_class": forms.TextInput(attrs={
+               "border":"2px solid aqua",
+            }),
+
+         }
+
+
+huhe notice: *******
+:  *request.method* return method of request like 'POST' or 'get'
+
+
+***directly save model form to database.
+         if request.method is 'POST' 
+         and
+         model_form_object is_valid is altight 
+         #so we can use direct save the model form without signing one by one in model class
+         but just in model form we can use 
+         now run:
+         model_form_obj.save()     #it automatically save the form in database.
+
+
+
+
+
+
+
+*******        class based views   (views.py)      *******
+to run a html page by class based view and use form in ::
+#make a class inherited 'view'from modules 'django.views'
+         from django.views import View
+         class  class_based_view1(View):
+#make 2 funcs as 'get',and 'post' and self in eachother to specific request recognization.
+            def get(self,request):
+               pass
+            def post(self,request):
+               pass
+#make them right in function as post or get by saving forms item.
+#* then go to urls.py and make the path relate to this class_based_view  ***but its important to add a command 
+#in the end of path that is "as_view()" 
+path("path_url",views.class_based_view.as_view(),name="...")
+
+.e.g:
+from django.views import View               #import view 
+class contact_us4(View):                    #inherit view 
+    def get(self,request):                  #get method function "name is special" by using request
+        new_form = direct_model_form()      #get object of direct model form from forms.py
+        contact_form = {                    #make dict to send in html
+            "contact_form":new_Form,
+            }                               #return it by render.
+        return render(request,"contact/contact_us.html",contact_form)
+    def post(self,request):                 #make post method function by using request.
+        contact_form = direct_model_form(request.POST)    #use reqeust.POST to get infos from direct_model_form  in the forms.py
+        if contact_form.is_valid():                       #is_valid method is essential when you use 'POST'method
+            contact_form.save()                           #direct save the form(because we used 'ModelForm') in database
+            return redirect(galnce3_contact_page)         #redirect to a page after send form's informations.
+#then go to urls.py and add path::::
+path("path_url",views.class_based_view.as_view(),name="...")   #add 'as_view()' command to know class to django as a view.
+
+
+
+google 'class based view'
+
+
+make a simple url path in views by class based views
+from django.views import View
+class index_page_view(View):
+     def get(self,request):              #doubt: urlpath is 'get' method
+         context ={
+             "data":"given data..."
+         }
+         return render(request,"home_module/index_page1.html",context)
+and in urls.py:
+path("url_name",index_page_view.as_view(),name="ldfkj")    #becouse url is some kind of 'get'method we can use it by def get in views.py
+
+
+
+
+
+
+****   send data,use TemplateView,class based view **without**defined 'get or post'
+first:
+from django.views.generic.base import TemplateView       #import TemplateView
+#make a class_based_view iherits TemplateView
+class class_based_view(TemplateView):
+#to send .html file as a template you should send in the 'template_name'
+template_name = "template/path/template.html"
+#how to being ready for send informations: inorder to this subject you should define the "get_context_data"function in current class
+   def get_context_data(self,**kwargs):
+#now you have 2way to continue  1st_way:not send information but ready for that ___ 2nd_way:send informations
+#1st_way:
+         return super().get_context_data(**kwargs)
+
+#2nd_way:
+         #you shold make a variable that include <super().get_context_data(**kwargs)>
+         vari_to_send = super().get_context_data(**kwargs)
+         vari_to_send["key1"] = val1
+         vari_to_send["key2"] = val2 ....
+         return vari_to_send           #now send info to the html page.
+
+.e.g:::::
+from django.views.generic.base import TemplateView
+class index_page_view(TemplateView):
+    template_name = "home_module/index_page1.html"
+    #how to send data by TemplateView
+    def get_context_data(self,**kwargs):
+        new_data = super().get_context_data(**kwargs)
+        #if you do not need any additional data return"super().get_context_data(**kwargs)" if not make it in variable and use it in a way below.
+        new_data["data32"] = "given data 32"
+        return new_data
+
+
+#get data and send in class based view 
+#inherit TemplateView 
+#defining get_context_data
+from django.views.generic.base import TemplateView
+class product_detail_view(TemplateView):
+    template_name = "products/item_detail.html"         #send a html page template
+    
+    def get_context_data(self,**kwargs):                 #it returns a data to main html page 
+        #'self' and "**kwargs" : **kwargs includes the argumans we sent in the url that we can read them again
+        given_data = super(product_detail_view,self).get_context_data() #make object of database model
+        #super need to sign the class name you want to use 
+        slug = kwargs["prod_slug"]       #get the variable has been put in urls.py by "kwargs"
+        db_data = get_object_or_404(products,slug=slug)   #get data from model
+        given_data["a_product"] = db_data  #give the data a name to use in .html template
+        return given_data
+
+
+
+#use query to get data and send them simply
+#use ListView
+#make more simple to get and send from database
+#import ListView and inherit it 
+from django.views.generic import ListView
+class product_show_view(ListView):
+    template_name = "products/shop.html"      #html page you want to send by this view
+    #model defines the model_class_name in models.py
+    model = products_class_in_model
+    #context_object_name get the name you want to send data by that in .html page      
+    context_object_name = "all_products" #name sends data to html through
+    #notice: if 'context_object_name' didn't defined django automatically send by default name ="object_list"
+#so filter data form database in ListView
+#define the "get_queryset(self)" that is default ListView function we can rewrite it  
+    def get_queryset(self):
+        query1 =  super(product_show_view,self).get_queryset()
+        filtered_data = query1.filter(price__lt=1087)       
+        #get data and filter it 
+        return filtered_data
+    
+
+
+#use DetailView to show items in database automatically 
+#detail view automatically get the variable in view and make it by one 
+#features of database you wan't('slug',or'pk')
+#* varable in the url must be 'slug:slug' or "int:pk"
+in the views.py you should define ::::
+e.g.
+from django.views.generic import ListView
+class product_show_view(ListView):
+   template_name = "products/shop.html"   #template to send 
+    model = products                      #model you want get items from
+    context_object_name = "all_products" #name sends data to html through
+    #notice: if 'context_object_name' didn't defined django automatically send by default name ="object"
+   #*****   check the names in the .html files
+#make sure if you use "get_absolute_url" in models.py make sure to 
+#use 'pk' or 'slug' has been returned 
+
+
+#make form automatic show by 'FormView'
+#first import FormView
+from django.views.generic.edit import FormView
+#make a class import 'FormView'
+#import the form from .forms
+from .forms import theform
+class contact_us4(FormView):
+    template_name = "contact/contact_us.html"   #template to show#send informations by template variable name('form')
+    form_class = theform   #the form we want use in .form
+    success_url = "next_url"   #after validation we go here
+    def form_valid(self, form):     #to save the form we use this general function
+      form.save()
+      return super().form_valid(form)
+
+
+
+
+#create forms via views.py directly using CreateView
+#first import CreateView from django.views.generic.edit 
+from django.views.generic.edit import CreateView
+#import the model you want to make it form in models.py
+from .models import model_form_in_models.py_1 
+class contact_us4(CreateView):
+     template_name = "contact/contact_us.html"   #we wan't use form by template variable 'form'maybe'forms'
+     #form_class = contact_model_form   #we don't use forms. 
+     model = model_form_in_models.py_1   #it must be modelform #create form directly from models.py
+     fields = ["item1_in_model",....]    #items has to include form
+     success_url = "/co/contact_us4"
+     def form_valid(self, form):
+         form.save()
+         return super().form_valid(form)
+
+
+
+*******       upload and uploaded file      ***********
+#first define 'get'and 'post' included view
+#and in .html in form tag you should sign("enctype="multipart/form-data" action  , method=   >
+   ") to know it to django
+<form enctype="multipart/form-data" action ="{%url 'contact_profile'%}"  id="main-contact-form" class="contact-form row"   method="post"  >
+#enctype ,action and method is essential.
+#then in .html write the input is <input name="uploaded_image" type ="file"> has 'name' and 'type',
+#name and type is essential
+then you can see the features or files posted items in views.py by 'request.POST'
+
+
+
+
+#define function to save 'posted'or uploaded picture in the made directory
+def save_file(file):            #get an object from posted file
+    with open("temp/uploaded_pic.jpg","wb+")as dest:    #write it binary to not distribute the type of file#specify destination
+        for chunk in file.chunks():                     #we uploaded chunk by chunk now we should save it chunk by chunk to dont loss memory
+            dest.write(chunk)                           #add chunk to file obj               
+#how to use it?
+e.g.:
+save_file(request.FILES['uploaded_image']) #use it in the post function of class view
+#by request.FILES["file_name_in_template_input"] we recognize the file.
+
+
+
+#save images through forms.py
+first define form class
+
+class form_class_to_upload(forms.Form):
+#use FileField 
+image_form = forms.FileField()
+#then go to view and import form class
+from forms import form_class_to_upload
+#then in get function:
+ form_obj = form_class_to_upload()
+#then put it in dictionary
+ dict = {'form':form_obj}
+#and send it by render to template
+   return render(request,"template.html",dict)   #send the form with name ('form')
+#so go to template and use it by :
+{{form}}
+####
+#now go to the post method function at views.py :
+#more lines above we discribe how define function to save photo
+#now in views.py in post method
+save_file_function(request.FILES['class_form_item_name'])
+return ....
+
+
+
+#upload files by using models.py,forms.py,views.py
+#first in main settings.py add line below:
+MEDIA_ROOT = BASE_DIR / 'uploades'   it makes an 'uploades' file in main directory of django project to handle all MEDIA 
+#then make a model inherited models.Model and make FileField  
+class models_class(models.Model):
+   image = models.FileField(upload_to='uploaded')  #upload_to = where file to save?
+#then go to views and save it by last form_saving_post_function but this way:
+#make variable of models class here then save it....
+model_variable = class_model_file_to_upload(item1= request.FILES['key1_for_item_in_form'])
+model_variable.save    #saved....
+
+
+
+#just upload images 
+#you should download ' pillow ' package to run it....
+#in the models.py in your class to save the pictures change field to 'ImageField'
+#then in the forms.py change field to "ImageField" too.
+#now run code in html by template variables 
+
+
+
+
+
+
+#get image more simple by use"CreateView"
+#first import CreateView
+from django.views.generic.edit import CreateView
+from django.models import profile_images_imported_in_model
+#inherit it 
+class contact_profile_view(CreateView):
+#sign template you wanna use 
+    template_name = 'contact/contact_prof.html'
+   #sign model class you want to save pictures
+    model = profile_images_imported_in_model()
+    #fields of model
+    fields = '__all__'
+    #after success upload where to send
+    success_url = reverse('contact_profile')
+    #template variable name.
+    context_object_name = "get_pic"
+
+
+
+#** django locks its folder's url to not access to those
+#to solve above problem to use media files we should do :::
+#in main settings.py add these lines to specify the url that allowed to files
+
+MEDIA_ROOT = BASE_DIR  /'uploaded_files'   #know where save all media file
+MEDIA_URL = "/medias/"                     #what prefixes use to allow url
+#then in the main urls.py add those url in the way:
+from django.conf.urls.static import static
+from django.conf import settings
+urlpatterns = [
+   path(....),
+   path(....),
+   ...
+   ] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+
+
+
+
+************      sessions       ***************
+#session id keep us login
+
+** what do we need to use sessions in django?
+#first check in the main settings.py that includes the line below in the MIDDDLEWEAR part
+'django.contrib.sessions.middleware.SessionMiddleware',
+#then in the settings.py in INSTALLED_APPS  add line below or make sure includes it....
+'django.contrib.sessions',
+
+*change the session expire_date
+#default sessions in django expires in 2weeks
+to change it add line bellow in main settings.py 
+SESSION_COOKIE_AGE = 34200   #has been measured by seconds.
+
+#make view using sessions
+#first in template .html file make an input,buttom (in form) 
+#then make a new urls.py url to send the action=? to ..
+path("same_address_in_action_in_form_in_template",views.maked_class_to_process_sent_request.as_view(),name="not_important"),
+#so make a view contains the line to process the request and save the information to current session:
+from django.views import View
+class views.maked_class_to_process_sent_request(View):
+   def post(self,request):
+      #give informations from request
+      item_given = request.POST["input_name_in_template"]
+      #process item_given for example getting it from database
+      #so now without any process in informations we save the 'item_given' in the current page session
+      #notice:google json file,,,, item to save in session must be simple like an integer,string..
+      request.session['key_to_save_session'] = item_given
+      #now return on current page. 
+      return redirect("the_current_page_url") 
+      
+#use session in template .html file
+#its very easy by sending data form context_object_name in the item_show_view
+def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        product_loaded = self.object.id   #object is default variable template name given from DetailView
+        request = self.request   #give information from request to make it and make sessions
+        #favorite_prod_id_in_session = request.session['favorite_product']  #get data by the name of sent session as a key
+        #to not see the error for not using one time session we can use the line below not above.
+        #favorite_prod_id_in_session = request.session.get('favorite_product')  #get data by the name of sent session as a key
+        #notice**: session has should been used one time. to not see the error.
+        context["is_favorite"] = str(favorite_prod_id_in_session)==str(product_loaded)   #send object to template.
+        return context
+
+
+
+
+#**********    user authentication   not default    ***********#
+#if you dont make user authentication till other app in project go this way
+#you should first deactive all part of models.py class and urls.py
+#first make an app to control user authentication 
+./manage.py startapp user_auth_control
+#then add items in the class in models.py 
+
+from django.db import models
+from django.contrib.auth.models import AbstractUser,AbstractBaseUser
+class user(AbstractUser):
+   #make items
+    item1 = models.CharField(max_length=30,verbose_name="phone_number")
+    email_active_code = models.CharField(max_length=100,verbose_name="email_activation_code")
+    class Meta:
+        verbose_name = "client"
+        verbose_name_plural = "clients"
+    def __str__(self):
+        return self.get_full_name()
+
+#so delete the last database
+#delete all initial files in migration files 
+#deactivate last models by commenting main urls.py all created url's path
+#deactivate last installed_apps by commenting main settings.py 
+#delete db.sqlite3 file 
+#add the new model class to control user authentication by adding line bellow to settings.py
+AUTH_USER_MODEL = "made_control_user_auth.class_name_in_auth_app_model"
+#the line above makes the current auth_user_model new inorder to not use default's of django...
+#then 
+./manage.py makemigrations 
+./manage.py migrate
+#now activate the deactivated main urls and main installed_apps again
+#and run 
+./manage.py migrate
+#new auth user class installed and has been made_control_user_auth.class_name_in_auth_app_model
+*****
+
+
+#order items to show
+#when inherite 'ListView'or more class add 'ordering' to order items by:
+ordering = ['item_to_order_by_1','item_to_order_by_2',...]
+#when we use ordering in class_based_view access has been gotten to us by 2 key varaibles name 
+#in views we should assign how many items should arrange in a page by 
+paginate_by = 2    #2 items should show in  a page  then:
+#we can use features of django pagination by template variable names ('page_obj' and 'paginator')
+.e.g: in template .html 
+paginator.page_range     send numbers of page
+page_obj.has_previous
+page_obj.previous_page_number
+page_obj.has_next
+page_obj.next_page_number
+page_obj.number        #return current page number in pagination
+#notice:*  in pagination in url could be used by "page_url"+"?page=3"
+#//https:www.thispage.com/all_item?page=2    it use pagination. to page 3 .this number could be changed.
+
+
+**********   big question    ************
+how path to static files by django that dont need to add it after views url?
+چگونه فایل استاتیک را مسیر یابی کرد که نیاز به حذف پیشوند یو ار  ال نباشد.؟
+**********    سوال بزرگ      *************
+
+
+
+#validators in forms
+from django.core import validators 
+#then in form class 
+class form(forms.Form):
+   item1 = forms.CharField(
+      max_length  ..,
+      widget = ....,
+      validators = [
+      validators.MaxLengthValidator(200),
+      validators.EmailValidator,
+      ],
+   )
+  
+#*** how to make validators in forms.py ?  ***
+#classes in forms.py has a default function to set it as a new validator.
+from django import forms
+from django.core import validators
+from django.core.exceptions import ValidationError
+class form(forms.Form): 
+   item1 = ....
+   ...
+   ..
+   def clean_item1(self):            #special name to make a validator.
+      entry1 = self.cleaned_data.get("item1")    #get posted form
+      entry2 = self.cleaned_data.get("item2")
+      if entry1 == entry2:
+         return entry1
+      raise ValidationError("these arent match.")     #how to raise
+
+
+
+
+#  login and logout 
+in views.py 
+from django.contrib.auth import login,logout
+
+class login_view(View):
+    def get(self,request):
+        sent_login_form = login_form()        #form to send in template 
+        context = {
+             "login_form" : sent_login_form
+        }
+        return render(request,"account_module/login.html",context)
+
+
+    def post(self,request):
+        posted_form = login_form(request.POST)        #get information of filled form by 'POST'
+        if posted_form.is_valid():
+            entered_email = posted_form.cleaned_data.get("email")    #get email and pass word from post
+            entered_password = posted_form.cleaned_data.get("password")
+            user_to_log : user  = user.objects.filter(email=entered_email).first()   #check user is in models database or not.
+            if user_to_log !=None:    
+                if user_to_log.is_active:     #check entered user is active
+                    #its so important django use special method to check hashed password by user_to_log.check_password(pass_to_compare)
+                    pass_is_correct = user_to_log.check_password(entered_password)
+                    
+                    if pass_is_correct:
+                        #if pass is correct use imported login to login ...
+                        login(request, user_to_log)
+                        return HttpResponse(f'{user_to_log.username},_,{user_to_log.email},,,,-> logged in successfully.')
+                    else:
+                        #add some errors.
+                        posted_form.add_error('password',"pass is incorrect.")
+                else:
+                    posted_form.add_error('password',f'{user_to_log.username},_,{user_to_log.email},,,,-> logged isn\' active.')
+            else:
+                posted_form.add_error('password',"entered client has not been found.")
+        else:
+            posted_form.add_error('password',"entereds are invalid.")
+ 
+        context = {
+             "login_form": posted_form
+        }
+        return render(request,"account_module/login.html",context)
+
+
+
+#how to send mail
+this way is no longer usable by google without app password
+#use gmail app password to make it done 
+#set above settings in main settings.py 
+
+#settings to use email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMALI_HOST_USER= ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT =587 
+
+#then make a folder named'utils or another' and make a file.py in it named'send_mail_file.py' and '__init__.py'
+#after that in send_mail_file.py write:
+
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags 
+from django.conf import settings
+def send_email(subject,to,context,template_name):
+    try:
+        html_message = render_to_string(template_name,context) #using special template for mail make a html file includes 'context' data 
+        plain_message = strip_tags(html_message)
+        from_email =settings.EMAIL_HOST_USER
+        send_mail(subject, plain_message, from_email, [to],html_message=html_message)
+    except:
+        pass
+
+#then go to your views.py and 
+from .utils.mail_sender import send_email
+#and use this module
+
+**notice:django does not show error when enabling (try,except) so be careful to use them.@@@
+
+**notice: if in admin hasn't signed the model,data has not been shown in the admin pannel
+
+
+** changes in admin.py can show more details in one line or able to edit or not in admin.py by making class in  it....
+
+#whats"_set" in  item_in_models_set and what does it do/???????
+#get item by a foreign key: in view...
+for item in foreignKey_class_model:
+   item.footer_link_set        #get all entry signed to item
+#then return or kick foreignKey_class_model to template.
+
+
+#using sliders in html
+#whenever you use sliders in html give class "active" to first one 
+#if you use sliders by 'for' loop you can use methode "forloop.first"or"forloop...." in the loop to figure out which number is in. 
+
+
+
+part 93,94
+what does apps.py use for?
+
+
+ what does db_index come for?
+
+allow_unicode?
+paginate_by
+differents of path and url
+
+
+
+*******    picture thumbnail     ***********
+#use sorl-thumbnail package
+#first install sorl-thumbnail
+pip install sorl-thumbnail 
+#check site package documentation and focus on it 
+#its too important
+# Add ***sorl.thumbnail*** to your settings.INSTALLED_APPS.
+# Configure your settings
+# If you are using the cached database key value store you need to sync the database:
+# python manage.py migrate
+#then in html file: 
+{% thumbnail item.image "200x100" as im %}
+    <img src="{{ im.url }}">
+{% endthumbnail %}
+
+
+
+
+
+
+
+
+#change works should done when you save anything in admin.py
+class models_class_admin(admin.ModelAdmin):
+        list_display = [......]
+        list_edita.......
+
+        def save_model(self,request:HttpRequest,obj:model_class,form,change):
+            print(
+            change,          #boolean is true or false
+            request.user,     #sent user
+            obj,              #informations
+            form,             
+            )  
+            return super().save_mdoel(request ,obj ,form,change)
+
+
+#make django calander jalali or shamsi or hijri 
+#download related updated shamsi library and install it 
+#add it to installed_apps in settings.py 
+#make some changes in admin.py .e.g
+....
+
+
+###   make custome template tag in django
+#make a new app in project
+#in new appp make a folder named "templatetags"
+#add __init__.py  and "custome_tem_tag_name.py" in /templatetags
+#in custome_tem_tag_name.py  
+from django import template  #to use 
+register = template.Library()   #add to templates library
+def upper(value:str):
+    for alpha in value: 
+        if 97<=ord(alpha)<=122:
+            return replace(alpha,chr(ord(alpha)-32))
+#in your template html file
+{%load custome_tem_tag_name %}
+then use it by
+{{ variable |upper}}
+
+
+
+*notice: get_queryset is important.
+#query_name__parent ==... 
+#query_name.set....
+#if you make foreignKey to itself you have made parent if more than a relation 
+
+
+
+#*******   how to get all objects and parents with one query? 
+complex_query_in_views = class_model.objects.filter(pk ='folan',parent=None).prefetch_related('class_model_set') 
+
+
+*****   how to use ajax in site?   *******
+ajax is important to send data from webpage wothout rerender it 
+can be used in online chatting and ....
+part 102,103 were about ajax 
+
+
+
+#we can use 'request' object in template tag in html file 
+.e.g
+{%if request.resolver_match.url_name == 'home_page' %}     
+...
+{%endif%}
+#  request.resolver_match.url_name  return current page address
+
+
+
+#default value in form before fill out 
+class show_form_view(View):
+   def get (self,request):
+      user_data = class_model.objects.filter(which = 'i want').first()
+      form = made_imported_form(initial={
+         'item_1th_form' : user_data.name,
+         'item_2th_form' : user_data.id ,
+         ,,,,
+
+      })
+####it fill the form with default data before fill out,
+# to get default value to form you can send it by 'instance' too,
+class show_form_view(View):
+   def get (self,request):
+      user_data = class_model.objects.filter(which = 'i want').first()
+      form = made_imported_form(instance = user_data) 
+#notice: using'instance' needs the data which is SAME CLASS as models you imported from database to create forms.
+
+#### if you want to upload files to form you need to sign enctype in html code....
+
+#use bootstrap component by searching 
+
+
+#learn about django queries
+#if you want to give all data by a few queries
+model_class.objects.annotate(new_field = 'imported_model_name_object').filter(folan='folan')
+
+
+#order 'get_queryset' runs before 'get_context_data'
+
+
+
+
+*****
+#request.GET when you use get method 
+#request.POST when you use post method 
+
+
+
+#sue choices in model class in models.py 
+search about django choice fields
+use models.textchoices class 
+
+
+
+* get client IP 
+request.META.get("HTTP_X_FORWARDED_FOR")
+request.META.get("REMOTE_ADDR")   
+
+
+
+
+#add visit counter to products by id and ip to show and manage measures 
+
+
+#you can use 'exclude' command in queries,
+
+
+
+* class_model.objects.getorcreate(....)
+
+
+*return jsonresponse
+
+* what is cdn in js?
+
+@login_required         **** whats that?
+
+
+
+### WHEN WE want to show pages just to loged in account we
+#import and use '@login_required("address_to_send_if_not_loged)' in a line above function base views
+if you want to sign an address to all without typing any time you should add line below to your main settings.py code 
+LOGIN_URL = '/loggings_address....'
+#in class base views it differs.
+#use method decorator in class before you CBV 
+#method_decorator(login_required,name='dispatch')
+
+
+
+#use bank pay app like zarin pall 
+
+#annotate in query is important to use  
+
+#make custom admin pannel by decorator 
+
+#change auto made form by packages like django-widget-tweaks
+
+
+#  ****   learn about decorator and dispatch method to deny enter permission
+#use mixin in django  
+
+
+
