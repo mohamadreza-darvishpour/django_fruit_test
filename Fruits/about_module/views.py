@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 
 def one(request):
-    return HttpResponse("hey you start godly.")
-
+    #return HttpResponse("hey you start godly.")
+    return render(request,'about_module/about.html')
+    
 
