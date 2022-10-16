@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'our_fruit_module',
     'register_module',
     'testimonial_module',
+    'addition',
     #external
+    'django_render_partial',
 ]
 
 MIDDLEWARE = [

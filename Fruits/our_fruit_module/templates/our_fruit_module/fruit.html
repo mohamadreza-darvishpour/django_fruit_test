@@ -1,0 +1,136 @@
+{%load static %} {%load render_partial %}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Ninom</title>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+    {% render_partial 'addition.views.HeaderNavPartial'%}
+
+
+    <!-- fruit section -->
+
+    <section class="fruit_section layout_padding">
+        <div class="container">
+            <div class="heading_container">
+                <hr>
+                <h2>
+                    Fresh Fruit
+                </h2>
+            </div>
+        </div>
+        <div class="container-fluid">
+
+            <div class="fruit_container">
+                <div class="box">
+                    <img src="{% static  'images/f-1.jpg' %}" alt="">
+                    <div class="link_box">
+                        <h5>
+                            Orange
+                        </h5>
+                        <a href="">
+              Buy Now
+            </a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="{% static  'images/f-2.jpg' %}" alt="">
+                    <div class="link_box">
+                        <h5>
+                            Blueberry
+                        </h5>
+                        <a href="">
+              Buy Now
+            </a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="{% static  'images/f-3.jpg' %}" alt="">
+                    <div class="link_box">
+                        <h5>
+                            Banana
+                        </h5>
+                        <a href="">
+              Buy Now
+            </a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="{% static  'images/f-4.jpg' %}" alt="">
+                    <div class="link_box">
+                        <h5>
+                            Apple
+                        </h5>
+                        <a href="">
+              Buy Now
+            </a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="{% static  'images/f-5.jpg' %}" alt="">
+                    <div class="link_box">
+                        <h5>
+                            Mango
+                        </h5>
+                        <a href="">
+              Buy Now
+            </a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="{% static  'images/f-6.jpg' %}" alt="">
+                    <div class="link_box">
+                        <h5>
+                            Strawberry
+                        </h5>
+                        <a href="">
+              Buy Now
+            </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- end fruit section -->
+
+
+
+    <!-- info and footer section -->
+    {% render_partial 'addition.views.FooterPartial' %}
+
+
+    <script type="text/javascript" src="{% static  'js/jquery-3.4.1.min.js'  %}"></script>
+    <script type="text/javascript" src="{% static  'js/bootstrap.js'  %}"></script>
+    <script type="text/javascript" src="{% static  'js/custom.js'  %}"></script>
+
+</body>
+
+</html>

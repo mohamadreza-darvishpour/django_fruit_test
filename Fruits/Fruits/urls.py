@@ -25,5 +25,6 @@ urlpatterns = [
     path('register/', include('register_module.urls')),     
     path('testimonial/', include('testimonial_module.urls')),    
     path('contactus/', include('contact_us_module.urls')),   
+    path('addition/',include('addition.urls')),
  
 ]
