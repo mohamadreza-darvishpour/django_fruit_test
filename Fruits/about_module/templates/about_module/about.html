@@ -35,11 +35,13 @@
     <!-- about section -->
 
     <section class="about_section layout_padding">
+        {%for about in abouts%}
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 px-0">
                     <div class="img-box">
-                        <img src="{% static 'images/about-img.jpg'  %}" alt="">
+                        <!-- <img src="{% static 'images/about-img.jpg'  %}" alt=""> -->
+                        <img src={{about.about_image.url}} alt="">
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -47,12 +49,11 @@
                         <div class="heading_container">
                             <hr>
                             <h2>
-                                About Our Fruit Shop
+                                {{about.title}}
                             </h2>
                         </div>
-                        <p>
-                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
-                        </p>
+                        <p> {{about.text1}} </p>
+                        <p> {{about.text2}} </p>
                         <a href="">
               Read More
             </a>
@@ -60,6 +61,8 @@
                 </div>
             </div>
         </div>
+
+        {%endfor%}
     </section>
 
     <!-- end about section -->
