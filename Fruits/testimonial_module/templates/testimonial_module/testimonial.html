@@ -44,7 +44,7 @@
             </div>
             <div id="carouselExample2Controls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    {%for testimonial in testimonials%}
+                    {%for testimonial in testimonials %}
                     <div class="carousel-item {% if forloop.first %}active{%endif%}">
                         <div class="client_container layout_padding-top">
                             <div class="img-box">
@@ -122,8 +122,6 @@
 
     <!-- footer - info section -->
     {% render_partial 'addition.views.FooterPartial' %}
-
-
 
     <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
