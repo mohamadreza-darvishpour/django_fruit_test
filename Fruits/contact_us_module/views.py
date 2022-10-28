@@ -2,12 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse 
 from django.views import View
 
-import contact_us_module
-from .forms import UserModelForm
+# from .forms import UserModelForm
 
 def one(request):
     #return HttpResponse("hey you start godly.")
     return render(request,'contact_us_module/contact.html')
+
+
+
 
 class ContactUsFormView(View ):
     def get(self,request):  
