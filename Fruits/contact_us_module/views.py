@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse 
 from django.views import View
 
-# from .forms import UserModelForm
+from .forms import UserModelForm
 
 def one(request):
     #return HttpResponse("hey you start godly.")
@@ -13,7 +13,7 @@ def one(request):
 
 class ContactUsFormView(View ):
     def get(self,request):  
-        contact_form = UserModelForm()
+        contact_form = UserModelForm
         dict = {
             'contact_form' : contact_form,
         }
